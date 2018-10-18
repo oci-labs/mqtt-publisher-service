@@ -1,0 +1,8 @@
+micronaut:
+    application:
+        name: devo-mqtt-publisher
+                
+#Port number to run the project on
+    server:
+        port: 3001
+

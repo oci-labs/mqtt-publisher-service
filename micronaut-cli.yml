@@ -1,0 +1,5 @@
+profile: service
+defaultPackage: devo.mqtt.publisher
+---
+testFramework: junit
+sourceLanguage: java
