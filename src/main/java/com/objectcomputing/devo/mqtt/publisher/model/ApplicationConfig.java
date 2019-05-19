@@ -7,116 +7,131 @@ import java.util.Properties;
 
 public class ApplicationConfig {
 
-  public String brokerHostName = "tcp:/", writeTopic = null, content = null, interval, noOfMessages, max, min;
-  public int qos;
-  public String clientId = "Devo-MQTT-Publisher", function, type;
+    private String brokerHostName;
+    private String brokerHostPort;
+    private String writeTopic = null;
+    private String content = null;
+    private String interval;
+    private String noOfMessages;
+    private String max;
+    private String min;
+    private String clientId;
+    private String function;
+    private String type;
+    private int qos;
 
-  public ApplicationConfig() {
-    try {
-      //get values from configuration file
-      configValues("get");
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-  }
-
-  public void configValues(String val) throws Exception {
-
-    InputStream inputStream = null;
-    try {
-      Properties config = new Properties();
-      String configFileName = "config.properties";
-
-      inputStream = getClass().getClassLoader().getResourceAsStream(configFileName);
-
-      if (inputStream == null) {
-        throw new FileNotFoundException("Configuration file " + configFileName + "not found in classpath");
-      }
-      config.load(inputStream);
-
-      if (val != "get")
-        setValues(config);
-      else
-        getValues(config);
-
-    } catch (Exception e) {
-      System.out.println("Exception: " + e);
-    } finally {
-      if (inputStream != null)
-        inputStream.close();
-    }
-  }
-
-  private void getValues(Properties config) {
-
-    InetAddress ipAddress = null;
-    String brokerHostPort;
-
-    try {
-      ipAddress = InetAddress.getByName(config.getProperty("hostname"));
-    } catch (java.net.UnknownHostException e) {
-      System.out.println("Exception: " + e);
+    public ApplicationConfig() {
+        this.setBrokerHostPort("1883");
+        this.setBrokerHostName("127.0.0.1");
+        this.setQos(2);
+        this.setWriteTopic("MQTT Examples");
+        this.setContent("Message from MqttPublishSample");
+        this.setClientId("Devo-MQTT-Publisher");
     }
 
-    brokerHostPort = config.getProperty("hostport");
-    writeTopic = config.getProperty("topic");
-    qos = Integer.parseInt(config.getProperty("QOS"));
-    content = config.getProperty("content");
-    brokerHostName = new StringBuilder().append(brokerHostName).append(ipAddress.toString()).append(brokerHostPort).toString();
-  }
+    public String getBrokerHostName() {
+        return brokerHostName;
+    }
 
-  private void setValues(Properties config) {
+    public String getWriteTopic() {
+        return writeTopic;
+    }
 
-    config.setProperty("interval", interval);
-    config.setProperty("noOfMessages", noOfMessages);
-    config.setProperty("function", function);
-    config.setProperty("max", max);
-    config.setProperty("min", min);
-    config.setProperty("type", type);
-  }
+    public int getQos() {
+        return qos;
+    }
 
-  public String getBrokerHostName() {
-    return brokerHostName;
-  }
+    public String getContent() {
+        return content;
+    }
 
-  public String getWriteTopic() {
-    return writeTopic;
-  }
+    public String getInterval() {
+        return interval;
+    }
 
-  public int getQos() {
-    return qos;
-  }
+    public String getNoOfMessages() {
+        return noOfMessages;
+    }
 
-  public String getContent() {
-    return content;
-  }
+    public String getMax() {
+        return max;
+    }
 
-  public String getInterval() {
-    return interval;
-  }
+    public String getMin() {
+        return min;
+    }
 
-  public String getNoOfMessages() {
-    return noOfMessages;
-  }
+    public String getClientId() {
+        return clientId;
+    }
 
-  public String getMax() {
-    return max;
-  }
+    public String getFunction() {
+        return function;
+    }
 
-  public String getMin() {
-    return min;
-  }
+    public String getType() {
+        return type;
+    }
 
-  public String getClientId() {
-    return clientId;
-  }
+    public String getBrokerHostPort() {
+        return brokerHostPort;
+    }
 
-  public String getFunction() {
-    return function;
-  }
+    public void setBrokerHostPort(String brokerHostPort) {
+        this.brokerHostPort = brokerHostPort;
+    }
 
-  public String getType() {
-    return type;
-  }
+    public void setBrokerHostName(String hostName) {
+        InetAddress ipAddress = null;
+        try {
+            ipAddress = InetAddress.getByName(hostName);
+        } catch (java.net.UnknownHostException e) {
+            System.out.println("Exception: " + e);
+        }
+        this.brokerHostName = new StringBuilder()
+              .append("tcp:/")
+              .append(ipAddress.toString())
+              .append(":")
+              .append(this.getBrokerHostPort()).toString();
+    }
+
+    public void setWriteTopic(String writeTopic) {
+        this.writeTopic = writeTopic;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public void setInterval(String interval) {
+        this.interval = interval;
+    }
+
+    public void setNoOfMessages(String noOfMessages) {
+        this.noOfMessages = noOfMessages;
+    }
+
+    public void setMax(String max) {
+        this.max = max;
+    }
+
+    public void setMin(String min) {
+        this.min = min;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
+    }
+
+    public void setFunction(String function) {
+        this.function = function;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setQos(int qos) {
+        this.qos = qos;
+    }
 }
-
